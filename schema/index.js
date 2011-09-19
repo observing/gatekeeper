@@ -35,11 +35,17 @@ schema.prototype.string = function string () {
 /**
  * The value should be a number.
  *
+ * @param {Boolean} loose turn off strict validations
  * @api public
  */
 
-schema.prototype.number = function number () {
-  this.validations.push('if (toString(value) !== "number") return false;');
+schema.prototype.number = function number (loose) {
+  if (!loose) {
+    this.validations.push('if (toString(value) !== "number") return false;');
+  } else {
+    this.validations.push('if (toString(+value) !== "number") return false;');
+  }
+
   return this;
 };
 
@@ -115,7 +121,7 @@ schema.prototype.undefined = function undef () {
  * @api public
  */
 
-schema.prototype.null = function null () {
+schema.prototype.null = function nul () {
   this.validations.push('if (toString(value) !== "null") return false;');
   return this;
 };
@@ -192,7 +198,20 @@ schema.prototype.each = function each (args, pattern) {
   }
 
   return this;
-}
+};
+
+schema.prototype.either = function either () {
+  var args = arguments
+    , i = args.length
+    , statements = []
+
+  while (i--) {
+    statements.push('value === ' + arg[i]);
+  }
+
+  this.validations.push('if (!(' + statements.join(' || ') + ')) return false;');
+  return this;
+};
 
 /**
  * The value should have these values
@@ -235,7 +254,7 @@ schema.prototype.unique = function unique () {
  * @api public
  */
 
-scheme.prototype.dividesby = function devidesby (amount) {
+schema.prototype.dividesby = function devidesby (amount) {
   this.validations.push('if (value % ' + amount + ' !== 0) return false;');
   return this;
 };
@@ -316,7 +335,9 @@ schema.prototype.optional = function optional () {
  */
 
 schema.prototype.__defineGetter__('$', function $ () {
-  return new Function('value', this.validations.join(''));
+  this.validations.push('return true;');
+
+  return new Function('value', this.validations.join('\n'));
 });
 
 /**

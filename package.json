@@ -1,0 +1,9 @@
+{
+    "name": "gatekeeper"
+  , "version": "0.0.1"
+  , "description": "multi purpose validation library"
+  , "keywords": ["schema", "validation", "json", "validate"]
+  , "devDependencies": {
+        "expresso": "0.8.1"
+    }
+}
