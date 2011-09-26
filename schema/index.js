@@ -111,7 +111,7 @@ schema.prototype.function = function fn () {
  */
 
 schema.prototype.undefined = function undef () {
-  this.validations.push('if (toString(value) !== "undefined") return false;');
+  this.validations.push('if (toString(value) !== "undefined" || toString(value) !== "global") return false;');
   return this;
 };
 

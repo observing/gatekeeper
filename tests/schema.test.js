@@ -44,12 +44,13 @@ module.exports = {
       assert.ok(fn(function () {}));
       assert.ok(!fn('function () {}'));
 
+      console.log(undef.toString());
       assert.ok(undef());
       assert.ok(!undef(''));
 
       assert.ok(nul(null));
       assert.ok(nul(0));
 
-      next();
+      next && next();
     }
 }
