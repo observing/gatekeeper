@@ -111,7 +111,7 @@ schema.prototype.function = function fn () {
  */
 
 schema.prototype.undefined = function undef () {
-  this.validations.push('if (toString(value) !== "undefined") return false;');
+  this.validations.push('var undef; if (value !== undef) return false;');
   return this;
 };
 
@@ -122,7 +122,7 @@ schema.prototype.undefined = function undef () {
  */
 
 schema.prototype.null = function nul () {
-  this.validations.push('if (toString(value) !== "null") return false;');
+  this.validations.push('if (value !== null) return false;');
   return this;
 };
 

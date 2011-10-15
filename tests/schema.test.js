@@ -11,7 +11,7 @@ module.exports = {
       next();
     }
 
-  , 'schema type validationn (strict)': function (next) {
+  , 'schema type validation (strict)': function (next) {
       var string = new Schema().string().$
         , number = new Schema().number().$
         , array = new Schema().array().$
@@ -48,7 +48,7 @@ module.exports = {
       assert.ok(!undef(''));
 
       assert.ok(nul(null));
-      assert.ok(nul(0));
+      assert.ok(!nul(0));
 
       next();
     }
