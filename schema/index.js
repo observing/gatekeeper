@@ -153,7 +153,7 @@ schema.prototype.length = function length (amount, maximum) {
  */
 
 schema.prototype.above = function above (amount) {
-  this.validations.push('if (!value >= ' + amount + ') return false;');
+  this.validations.push('if (!(value > ' + amount + ')) return false;');
   return this;
 };
 
@@ -165,7 +165,7 @@ schema.prototype.above = function above (amount) {
  */
 
 schema.prototype.below = function below (amount) {
-  this.validations.push('if (!value <= ' + amount + ') return false;');
+  this.validations.push('if (!(value < ' + amount + ')) return false;');
   return this;
 };
 
@@ -194,11 +194,20 @@ schema.prototype.between = function between (low, high) {
 schema.prototype.each = function each (args, pattern) {
   var i = args.length;
   while (i--) {
-    this.validations.push(pattern.replace(/%\s?arg\s?%/g, args[i]));
+    this.validations.push(pattern.replace(
+      /%\s?arg\s?%/g
+    , JSON.stringify(args[i])
+    ));
   }
 
   return this;
 };
+
+/**
+ * The value should be either one of these, at least one should match.
+ *
+ * @api pubic
+ */
 
 schema.prototype.either = function either () {
   var args = arguments
@@ -206,7 +215,7 @@ schema.prototype.either = function either () {
     , statements = []
 
   while (i--) {
-    statements.push('value === ' + arg[i]);
+    statements.push('value === ' + JSON.stringify(args[i]));
   }
 
   this.validations.push('if (!(' + statements.join(' || ') + ')) return false;');

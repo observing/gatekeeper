@@ -44,13 +44,56 @@ module.exports = {
       assert.ok(fn(function () {}));
       assert.ok(!fn('function () {}'));
 
-      console.log(undef.toString());
       assert.ok(undef());
       assert.ok(!undef(''));
 
       assert.ok(nul(null));
       assert.ok(!nul(0));
 
-      next && next();
+      next();
+    }
+
+  , 'schema length and number validations': function (next) {
+      var length = new Schema().length(10).$
+        , minmax = new Schema().length(10, 15).$
+        , above = new Schema().above(10).$
+        , below = new Schema().below(10).$
+        , between = new Schema().between(10, 15).$;
+
+      assert.ok(length('1234567890'));
+      assert.ok(!length('pewpew'));
+
+      assert.ok(minmax('1234567890 12'));
+      assert.ok(!minmax('pewpew'));
+      assert.ok(!minmax('97420957230947534095720'));
+
+      assert.ok(above(11));
+      assert.ok(!above(10));
+
+      assert.ok(below(9));
+      assert.ok(!below(10));
+
+      assert.ok(between(12));
+      assert.ok(!between(10));
+      assert.ok(!between(110));
+
+      next();
+    }
+
+  , 'scheme item checking': function () {
+      var either = new Schema().either('ping', 'pong', 'pang').$
+        , have = new Schema().have('fox', 'box').$
+        , not = new Schema().not('fox', 'box').$;
+
+      assert.ok(either('ping'));
+      assert.ok(either('pong'));
+      assert.ok(!either('pew'));
+
+      assert.ok(have('the brown fox owns a box'));
+      assert.ok(have('the box owns a brown fox'));
+      assert.ok(!have('the fox'));
+      assert.ok(!have('the box'));
+      assert.ok(!have('wtf mate?'));
+
     }
 }
