@@ -4,6 +4,8 @@
  * MIT Licensed
  */
 
+var stringify = JSON.stringify;
+
 /**
  * Start a new schema validation.
  *
@@ -11,7 +13,7 @@
  * @api public
  */
 
-function schema () {
+function Schema () {
   this.validations = [
       // small handy helper function for type checking
       'var toString = function (val) {'
@@ -27,7 +29,7 @@ function schema () {
  * @api public
  */
 
-schema.prototype.string = function string () {
+Schema.prototype.string = function string () {
   this.validations.push('if (toString(value) !== "string") return false;');
   return this;
 };
@@ -39,7 +41,7 @@ schema.prototype.string = function string () {
  * @api public
  */
 
-schema.prototype.number = function number (loose) {
+Schema.prototype.number = function number (loose) {
   if (!loose) {
     this.validations.push('if (toString(value) !== "number") return false;');
   } else {
@@ -55,7 +57,7 @@ schema.prototype.number = function number (loose) {
  * @api public
  */
 
-schema.prototype.array = function array () {
+Schema.prototype.array = function array () {
   this.validations.push('if (toString(value) !== "array") return false;');
   return this;
 };
@@ -66,7 +68,7 @@ schema.prototype.array = function array () {
  * @api public
  */
 
-schema.prototype.object = function object () {
+Schema.prototype.object = function object () {
   this.validations.push('if (toString(value) !== "object") return false;');
   return this;
 };
@@ -77,7 +79,7 @@ schema.prototype.object = function object () {
  * @api public
  */
 
-schema.prototype.date = function date () {
+Schema.prototype.date = function date () {
   this.validations.push('if (toString(value) !== "date") return false;');
   return this;
 };
@@ -88,7 +90,7 @@ schema.prototype.date = function date () {
  * @api public
  */
 
-schema.prototype.regexp = function regexp () {
+Schema.prototype.regexp = function regexp () {
   this.validations.push('if (toString(value) !== "regexp") return false;');
   return this;
 };
@@ -99,7 +101,7 @@ schema.prototype.regexp = function regexp () {
  * @api public
  */
 
-schema.prototype.function = function fn () {
+Schema.prototype.function = function fn () {
   this.validations.push('if (toString(value) !== "function") return false;');
   return this;
 };
@@ -110,7 +112,7 @@ schema.prototype.function = function fn () {
  * @api public
  */
 
-schema.prototype.undefined = function undef () {
+Schema.prototype.undefined = function undef () {
   this.validations.push('var undef; if (value !== undef) return false;');
   return this;
 };
@@ -121,7 +123,7 @@ schema.prototype.undefined = function undef () {
  * @api public
  */
 
-schema.prototype.null = function nul () {
+Schema.prototype.null = function nul () {
   this.validations.push('if (value !== null) return false;');
   return this;
 };
@@ -135,7 +137,7 @@ schema.prototype.null = function nul () {
  * @api public
  */
 
-schema.prototype.length = function length (amount, maximum) {
+Schema.prototype.length = function length (amount, maximum) {
   if (!maximum) {
     this.validations.push('if (value.length !== ' + amount + ') return false;');
   } else {
@@ -152,7 +154,7 @@ schema.prototype.length = function length (amount, maximum) {
  * @api public
  */
 
-schema.prototype.above = function above (amount) {
+Schema.prototype.above = function above (amount) {
   this.validations.push('if (!(value > ' + amount + ')) return false;');
   return this;
 };
@@ -164,7 +166,7 @@ schema.prototype.above = function above (amount) {
  * @api public
  */
 
-schema.prototype.below = function below (amount) {
+Schema.prototype.below = function below (amount) {
   this.validations.push('if (!(value < ' + amount + ')) return false;');
   return this;
 };
@@ -177,7 +179,7 @@ schema.prototype.below = function below (amount) {
  * @api public
  */
 
-schema.prototype.between = function between (low, high) {
+Schema.prototype.between = function between (low, high) {
   this.below(high);
   this.above(low);
   return this;
@@ -191,12 +193,12 @@ schema.prototype.between = function between (low, high) {
  * @api private
  */
 
-schema.prototype.each = function each (args, pattern) {
+Schema.prototype.each = function each (args, pattern) {
   var i = args.length;
   while (i--) {
     this.validations.push(pattern.replace(
       /%\s?arg\s?%/g
-    , JSON.stringify(args[i])
+    , stringify(args[i])
     ));
   }
 
@@ -209,13 +211,13 @@ schema.prototype.each = function each (args, pattern) {
  * @api pubic
  */
 
-schema.prototype.either = function either () {
+Schema.prototype.either = function either () {
   var args = arguments
     , i = args.length
     , statements = []
 
   while (i--) {
-    statements.push('value === ' + JSON.stringify(args[i]));
+    statements.push('value === ' + stringify(args[i]));
   }
 
   this.validations.push('if (!(' + statements.join(' || ') + ')) return false;');
@@ -228,7 +230,7 @@ schema.prototype.either = function either () {
  * @api public
  */
 
-schema.prototype.have = function have () {
+Schema.prototype.have = function have () {
   this.each(arguments, 'if (value.indexOf(% arg %) === -1) return false;');
   return this;
 };
@@ -239,7 +241,7 @@ schema.prototype.have = function have () {
  * @api public
  */
 
-schema.prototype.not = function not () {
+Schema.prototype.not = function not () {
   this.each(arguments, 'if (value.indexOf(% arg %) !== -1) return false;');
   return this;
 };
@@ -253,7 +255,15 @@ schema.prototype.not = function not () {
  * @api public
  */
 
-schema.prototype.unique = function unique () {
+Schema.prototype.unique = function unique () {
+  this.each(arguments, [
+      'var counter = 0, position = value.indexOf(% arg %);'
+    , 'while (position !== -1) {'
+      , 'if (++counter > 1) return false;'
+      , 'position = value.indexOf(% arg %, position + 1);'
+    , '}'
+  ].join(''));
+
   return this;
 };
 
@@ -263,7 +273,7 @@ schema.prototype.unique = function unique () {
  * @api public
  */
 
-schema.prototype.dividesby = function devidesby (amount) {
+Schema.prototype.dividesby = function devidesby (amount) {
   this.validations.push('if (value % ' + amount + ' !== 0) return false;');
   return this;
 };
@@ -275,8 +285,8 @@ schema.prototype.dividesby = function devidesby (amount) {
  * @api public
  */
 
-schema.prototype.equal = function equal (value) {
-  this.validations.push('if (value !== ' + value + ') return false;');
+Schema.prototype.equal = function equal (value) {
+  this.validations.push('if (value !== ' + stringify(value) + ') return false;');
   return this;
 };
 
@@ -287,7 +297,7 @@ schema.prototype.equal = function equal (value) {
  * @api public
  */
 
-schema.prototype.match = function match (regex) {
+Schema.prototype.match = function match (regex) {
   this.validations.push('if (!'+ regex + '.test(value)) return false;');
   return this;
 };
@@ -298,8 +308,9 @@ schema.prototype.match = function match (regex) {
  * @api public
  */
 
-schema.prototype.lowercase = function lowercase () {
-  return this.match(/^[a-z0-9]+$/);
+Schema.prototype.lowercase = function lowercase () {
+  this.validations.push('if (value.toLowerCase() !== value) return false;');
+  return this;
 };
 
 /**
@@ -308,8 +319,9 @@ schema.prototype.lowercase = function lowercase () {
  * @api public
  */
 
-schema.prototype.uppercase = function uppercase () {
-  return this.match(/^[A-Z0-9]+$/);
+Schema.prototype.uppercase = function uppercase () {
+  this.validations.push('if (value.toUpperCase() !== value) return false;');
+  return this;
 };
 
 /**
@@ -318,7 +330,7 @@ schema.prototype.uppercase = function uppercase () {
  * @api public
  */
 
-schema.prototype.float = function float () {
+Schema.prototype.float = function float () {
   return this.dividesby(1);
 };
 
@@ -329,7 +341,7 @@ schema.prototype.float = function float () {
  * @api public
  */
 
-schema.prototype.optional = function optional () {
+Schema.prototype.optional = function optional () {
   this.validations.push('if (!value) return true;');
   return this;
 };
@@ -343,14 +355,14 @@ schema.prototype.optional = function optional () {
  * @api public
  */
 
-schema.prototype.__defineGetter__('$', function $ () {
+Schema.prototype.__defineGetter__('$', function $ () {
   this.validations.push('return true;');
 
   return new Function('value', this.validations.join('\n'));
 });
 
 /**
- * Expose the schema
+ * Expose the Schema.
  */
 
-module.exports = schema;
+module.exports = Schema;

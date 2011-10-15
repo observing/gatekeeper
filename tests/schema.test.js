@@ -58,7 +58,9 @@ module.exports = {
         , minmax = new Schema().length(10, 15).$
         , above = new Schema().above(10).$
         , below = new Schema().below(10).$
-        , between = new Schema().between(10, 15).$;
+        , between = new Schema().between(10, 15).$
+        , float = new Schema().float().$
+        , dividesby = new Schema().dividesby(12).$;
 
       assert.ok(length('1234567890'));
       assert.ok(!length('pewpew'));
@@ -77,13 +79,20 @@ module.exports = {
       assert.ok(!between(10));
       assert.ok(!between(110));
 
+      assert.ok(float(20));
+      assert.ok(!float(10.10));
+
+      assert.ok(dividesby(24));
+      assert.ok(!dividesby(25));
+
       next();
     }
 
-  , 'scheme item checking': function () {
+  , 'schema item checking': function (next) {
       var either = new Schema().either('ping', 'pong', 'pang').$
         , have = new Schema().have('fox', 'box').$
-        , not = new Schema().not('fox', 'box').$;
+        , not = new Schema().not('fox', 'box').$
+        , unique = new Schema().unique('foo', 'bar').$;
 
       assert.ok(either('ping'));
       assert.ok(either('pong'));
@@ -95,5 +104,32 @@ module.exports = {
       assert.ok(!have('the box'));
       assert.ok(!have('wtf mate?'));
 
+      assert.ok(not('pewpew'));
+      assert.ok(!not('fox'));
+      assert.ok(!not('box'));
+
+      assert.ok(unique('foo bar baz'));
+      assert.ok(!unique('foo bar bar'));
+
+      next();
+    }
+
+  , 'schema string checking': function (next) {
+      var match = new Schema().match(/^\d+$/).$
+        , lowercase = new Schema().lowercase().$
+        , uppercase = new Schema().uppercase().$
+        , equal = new Schema().equal('string').$;
+
+      assert.ok(match('1212'));
+      assert.ok(!match('hello world'));
+      assert.ok(!match('12a'));
+
+      assert.ok(lowercase('hello world'));
+      assert.ok(!lowercase('HELLO WORLD'));
+
+      assert.ok(equal('string'));
+      assert.ok(!equal('strings'));
+
+      next();
     }
 }
