@@ -129,6 +129,17 @@ Schema.prototype.null = function nul () {
 };
 
 /**
+ * The value should be a boolean
+ *
+ * @api public
+ */
+
+Schema.prototype.boolean = function bool () {
+  this.validations.push('if (toString(value) !== "boolean") return false;');
+  return this;
+};
+
+/**
  * When only argument is given the length should be exact, if 2 arguments are
  * given the length should be between those values
  *

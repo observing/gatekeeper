@@ -6,7 +6,7 @@ module.exports = {
       var s = new Schema();
 
       assert.ok(typeof s.$ === 'function');
-      s.$(); // also execute it
+      s.$(); // also execute it, so we know it doesn't throw
 
       next();
     }
@@ -20,9 +20,9 @@ module.exports = {
         , regexp = new Schema().regexp().$
         , fn = new Schema().function().$
         , undef = new Schema().undefined().$
-        , nul = new Schema().null().$;
+        , nul = new Schema().null().$
+        , bool = new Schema().boolean().$;
 
-      // now that we have compiled it, test if they correctly validate
       assert.ok(string('hello world'));
       assert.ok(!string(1));
 
@@ -49,6 +49,9 @@ module.exports = {
 
       assert.ok(nul(null));
       assert.ok(!nul(0));
+
+      assert.ok(bool(true));
+      assert.ok(!bool(1));
 
       next();
     }
@@ -132,4 +135,4 @@ module.exports = {
 
       next();
     }
-}
+};
