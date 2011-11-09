@@ -3,7 +3,7 @@ var gatekeeper = require('../lib/gatekeeper')
   , fixtures = require('./fixtures');
 
 module.exports = {
-    'library version number': function (next) {
+    'library version number': function () {
       assert.ok(/^\d+\.\d+\.\d+$/.test(gatekeeper.version));
     }
 };

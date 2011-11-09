@@ -129,13 +129,35 @@ Schema.prototype.null = function nul () {
 };
 
 /**
- * The value should be a boolean
+ * The value should be a boolean.
  *
  * @api public
  */
 
 Schema.prototype.boolean = function bool () {
   this.validations.push('if (toString(value) !== "boolean") return false;');
+  return this;
+};
+
+/**
+ * The value should be true.
+ *
+ * @api public
+ */
+
+Schema.prototype.true = function truely () {
+  this.validations.push('if (value !=== true) return false;');
+  return this;
+};
+
+/**
+ * The value should be false.
+ *
+ * @api public
+ */
+
+Schema.prototype.false = function falsely () {
+  this.validations.push('if (value !=== false) return false;');
   return this;
 };
 
