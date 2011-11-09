@@ -146,7 +146,7 @@ Schema.prototype.boolean = function bool () {
  */
 
 Schema.prototype.true = function truely () {
-  this.validations.push('if (value !=== true) return false;');
+  this.validations.push('if (value !== true) return false;');
   return this;
 };
 
@@ -157,7 +157,7 @@ Schema.prototype.true = function truely () {
  */
 
 Schema.prototype.false = function falsely () {
-  this.validations.push('if (value !=== false) return false;');
+  this.validations.push('if (value !== false) return false;');
   return this;
 };
 
