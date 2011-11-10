@@ -1,8 +1,13 @@
 {
     "name": "gatekeeper"
-  , "version": "0.0.1"
-  , "description": "multi purpose validation library"
-  , "keywords": ["schema", "validation", "json", "validate"]
+  , "version": "0.0.2"
+  , "description": "multi purpose data validation library"
+  , "author": "Arnout Kazemier <info@3rd-Eden.com>"
+  , "keywords": ["schema", "validation", "json", "validate", "data"]
+  , "repository": {
+        "type": "git"
+      , "url": "https://github.com/observing/gatekeeper.git"
+    }
   , "devDependencies": {
         "expresso": "0.8.1"
     }
