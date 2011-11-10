@@ -4,4 +4,4 @@
  * MIT Licensed
  */
 
-module.exports = require('lib/gatekeeper');
+module.exports = require('./lib/gatekeeper');
