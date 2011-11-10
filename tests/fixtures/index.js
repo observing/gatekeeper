@@ -1,3 +1,9 @@
+/**!
+ * Gatekeeper
+ * @copyright (c) 2011 Observer (observer.no.de) <info@3rd-Eden.com>
+ * MIT Licensed
+ */
+
 var Schema = require('../../schema');
 
 /**
@@ -19,17 +25,19 @@ exports.schema = {
  */
 
 exports.structure = {
-    type: ''
-  , id: ''
-  , admin: ''
+    type: 1
+  , id: 1
+  , admin: 1
 };
 
 /**
- * A more complex scheme to validate a structure against
+ * A more nested scheme to validate a structure against
  *
  * @type {Object}
  */
 
-exports.complex = {
-
+exports.nested = {
+    type: 1
+  , nested: exports.structure
+  , simple: 1
 };

@@ -71,9 +71,8 @@ module.exports = {
       }).against.schema(fixtures.schema) === false);
     }
 
-  , 'validate simple structure': function () {
+  , 'validate simple structures': function () {
       assert.ok(gatekeeper({
-      
       }).against.structure(fixtures.structure) === false);
 
       assert.ok(gatekeeper({
@@ -90,5 +89,60 @@ module.exports = {
         , id: 1
         , admin: true
       }).against.structure(fixtures.structure) === true);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+        , admin: true
+        , id: 1
+
+      }).against.structure(fixtures.structure) === true);
+    }
+
+  , 'validate nested structures': function () {
+      assert.ok(gatekeeper({
+      }).against.structure(fixtures.nested) === false);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+      }).against.structure(fixtures.nested) === false);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+        , simple: 1
+      }).against.structure(fixtures.nested) === false);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+        , simple: 1
+        , nested: {
+          }
+      }).against.structure(fixtures.nested) === false);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+        , simple: 1
+        , nested: {
+              type: 1
+          }
+      }).against.structure(fixtures.nested) === false);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+        , simple: 1
+        , nested: {
+              type: 1
+            , id: 0
+          }
+      }).against.structure(fixtures.nested) === false);
+
+      assert.ok(gatekeeper({
+          type: 'testing'
+        , simple: 1
+        , nested: {
+              type: 1
+            , id: 0
+            , admin: 1
+          }
+      }).against.structure(fixtures.nested) === true);
     }
 };
