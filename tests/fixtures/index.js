@@ -2,6 +2,8 @@ var Schema = require('../../schema');
 
 /**
  * A simple schema to validate objects against.
+ *
+ * @type {Object}
  */
 
 exports.schema = {
@@ -12,10 +14,22 @@ exports.schema = {
 
 /**
  * A simple scheme to validate a structure against.
+ *
+ * @type {Object}
  */
 
 exports.structure = {
     type: ''
   , id: ''
   , admin: ''
+};
+
+/**
+ * A more complex scheme to validate a structure against
+ *
+ * @type {Object}
+ */
+
+exports.complex = {
+
 };
