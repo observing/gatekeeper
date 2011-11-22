@@ -1,4 +1,4 @@
-# Gatekeeper
+# Gatekeeper [![Build Status](https://secure.travis-ci.org/observing/gatekeeper.png)](http://travis-ci.org/observing/gatekeeper)
 
 Gatekeeper is a simple validation library for Node.js.
 

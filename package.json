@@ -9,6 +9,9 @@
       , "url": "https://github.com/observing/gatekeeper.git"
     }
   , "devDependencies": {
-        "expresso": "0.8.1"
+        "expresso": "0.9.2"
+    }
+  , "scripts": {
+        "test": "make test"
     }
 }
