@@ -45,6 +45,20 @@ module.exports = {
 
       assert.ok(gatekeeper({
           admin: true
+        , id: 20
+        , type: 'ftl'
+        , extra: true
+      }).against.schema(fixtures.schema) === false);
+
+      assert.ok(gatekeeper({
+          admin: true
+        , id: 20
+        , type: 'ftl'
+        , extra: true
+      }).against.schema(fixtures.schema, true) === true);
+
+      assert.ok(gatekeeper({
+          admin: true
         , id: 21
         , type: 'wrong'
       }).against.schema(fixtures.schema) === false);
