@@ -1,8 +1,8 @@
 {
     "name": "gatekeeper"
-  , "version": "0.0.2"
+  , "version": "0.0.3"
   , "description": "multi purpose data validation library"
-  , "author": "Arnout Kazemier <info@3rd-Eden.com>"
+  , "author": "Arnout Kazemier <opensource@observe.it>"
   , "keywords": ["schema", "validation", "json", "validate", "data"]
   , "repository": {
         "type": "git"
