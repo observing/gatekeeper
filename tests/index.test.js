@@ -1,19 +1,11 @@
-/**!
- * Gatekeeper
- * @copyright (c) 2011 Observer (observer.no.de) <info@3rd-Eden.com>
- * MIT Licensed
- */
+'use strict';
 
-var gatekeeper = require('../lib/gatekeeper')
+var gatekeeper = require('../')
   , assert = require('assert')
   , fixtures = require('./fixtures');
 
 module.exports = {
-    'library version number': function () {
-      assert.ok(/^\d+\.\d+\.\d+$/.test(gatekeeper.version));
-    }
-
-  , 'gatekeeper accepts arguments': function () {
+    'gatekeeper accepts arguments': function () {
       assert.ok(!!gatekeeper(null));
       assert.ok(!!gatekeeper(1));
       assert.ok(!!gatekeeper([]));
