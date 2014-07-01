@@ -1,8 +1,4 @@
-/**!
- * Gatekeeper
- * @copyright (c) 2011 Observer (observer.no.de) <info@3rd-Eden.com>
- * MIT Licensed
- */
+'use strict';
 
 var stringify = JSON.stringify;
 
@@ -21,7 +17,7 @@ function Schema () {
     ,   'return rs.slice(8, rs.length - 1).toLowerCase();'
     , '};'
   ];
-};
+}
 
 /**
  * The value should be a string.
@@ -247,7 +243,7 @@ Schema.prototype.each = function each (args, pattern) {
 Schema.prototype.either = function either () {
   var args = arguments
     , i = args.length
-    , statements = []
+    , statements = [];
 
   while (i--) {
     statements.push('value === ' + stringify(args[i]));
@@ -397,5 +393,4 @@ Schema.prototype.__defineGetter__('$', function $ () {
 /**
  * Expose the Schema.
  */
-
 module.exports = Schema;

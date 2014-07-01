@@ -1,18 +1,27 @@
 {
-    "name": "gatekeeper"
-  , "version": "0.0.3"
-  , "description": "multi purpose data validation library"
-  , "author": "Arnout Kazemier <opensource@observe.it>"
-  , "keywords": ["schema", "validation", "json", "validate", "data"]
-  , "repository": {
-        "type": "git"
-      , "url": "https://github.com/observing/gatekeeper.git"
-    }
-  , "devDependencies": {
-        "mocha": "*"
-      , "should": "0.3.2"
-    }
-  , "scripts": {
-        "test": "make test"
-    }
+  "name": "gatekeeper",
+  "version": "0.0.3",
+  "description": "multi purpose data validation library",
+  "author": "Arnout Kazemier <opensource@observe.it>",
+  "keywords": [
+    "schema",
+    "validation",
+    "json",
+    "validate",
+    "data"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/observing/gatekeeper.git"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "0.3.2"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "fusing": "0.3.x"
+  }
 }
