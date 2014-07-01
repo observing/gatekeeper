@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "multi purpose data validation library",
   "author": "Arnout Kazemier <opensource@observe.it>",
   "keywords": [
